@@ -140,6 +140,22 @@ services:
     env_file:
       - aleph.env
 
+  worker:
+    image: alephdata/aleph:${ALEPH_TAG:-latest}
+    command: aleph worker
+    restart: on-failure
+    links:
+      - postgres
+      - elasticsearch
+      - redis
+      - ingest-file
+    tmpfs:
+      - /tmp
+    volumes:
+      - archive-data:/data
+    env_file:
+      - aleph.env
+
 volumes:
   archive-data: {}
   elasticsearch-data: {}
